@@ -14,6 +14,8 @@ Este projeto foi desenvolvido para demonstrar habilidades em Angular, Tailwind C
 - **Back-end:**
   - **Java 17**: Linguagem de programação para o desenvolvimento de back-end.
   - **Spring Boot 3**: Framework para criação de aplicativos Java baseados em Spring com configuração mínima.
+  - **PostgreSQL**: Sistema de gerenciamento de banco de dados relacional utilizado para armazenar dados.
+
 
 - **Node.js:**
   - **Node.js 18**: Ambiente de execução para JavaScript no servidor, utilizado para gerenciamento de dependências e scripts de desenvolvimento.
