@@ -1,0 +1,19 @@
+@import "primeicons/primeicons.css";
+
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer primeng;
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+html {
+  font-family: "Work Sans" !important;
+  background-color: #f9fafb !important;
+}

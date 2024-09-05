@@ -1,0 +1,125 @@
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+
+<p-table
+	#dt2
+	[paginator]="true"
+	[rows]="5"
+	[rowsPerPageOptions]="[5, 10, 20]"
+	[value]="users"
+	[tableStyle]="{ 'min-width': '100dvw', 'min-height': '70dvh' }"
+	[globalFilterFields]="['id', 'name', 'surname', 'email', 'nis']"
+>
+	<ng-template pTemplate="caption">
+		<section class="flex gap-3 md:gap-0 flex-col md:flex-row align-items-center justify-between w-full">
+			Usuários
+			<section class="flex items-center justify-between md:px-[5dvw] gap-3">
+				<p-button
+					title="Limpar campo de pesquisa"
+					[outlined]="true"
+					icon="pi pi-filter-slash"
+					(onClick)="clear(dt2)"
+				/>
+				<div class="flex gap-3 items-center">
+					<span class="p-input-icon-left ml-auto">
+						<i class="pi pi-search"></i>
+						<input
+							class="w-[400px]"
+							pInputText
+							type="text"
+							[(ngModel)]="searchValue"
+							(input)="onInput($event)"
+							placeholder="Pesquisar..."
+						/>
+					</span>
+					<p-button size="small" (click)="handleCreateUser()" icon="pi pi-plus" />
+					<p-button size="small" severity="secondary" (click)="findUsers()" icon="pi pi-refresh" />
+				</div>
+			</section>
+		</section>
+	</ng-template>
+	<ng-template pTemplate="header">
+		<tr>
+			<th>ID</th>
+			<th>Nome</th>
+			<th>Sobrenome</th>
+			<th>E-mail</th>
+			<th>NIS(PIS)</th>
+			<th></th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-user>
+		<tr>
+			<td>{{ user.id }}</td>
+			<td>{{ user.name }}</td>
+			<td>{{ user.surname }}</td>
+			<td>{{ user.email }}</td>
+			<td>{{ user.nis | nisFormat }}</td>
+			<td>
+				<div class="flex flex-nowrap">
+					<p-button size="small" icon="pi pi-pencil" (click)="onEdit(user)" />
+					<p-button
+						size="small"
+						icon="pi pi-trash"
+						class="ml-2"
+						severity="danger"
+						(click)="selectedUser = user; visibleDelete = true"
+					/>
+				</div>
+			</td>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="summary">
+		<div class="flex items-center justify-between font-semibold">
+			Há no total {{ users ? users.length : 0 }} usuários.
+		</div>
+	</ng-template>
+</p-table>
+
+<p-dialog header="Excluir usuário" [(visible)]="visibleDelete" [style]="{ width: '25rem' }">
+	<section class="flex flex-col gap-4">
+		<label class="font-semibold w-6rem"
+			>Tem certeza que deseja excluir o usuário "{{ selectedUser.name + " " + selectedUser.surname }}"?
+		</label>
+		<div class="flex justify-end gap-2">
+			<p-button size="small" label="Não" severity="secondary" (onClick)="visibleDelete = false" />
+			<p-button size="small" label="Sim" (onClick)="onDelete(selectedUser.id)" />
+		</div>
+	</section>
+</p-dialog>
+
+<p-dialog header="Criar usuário" [(visible)]="visibleCreate" [style]="{ width: '25rem' }">
+	<section class="flex flex-col">
+		<div class="flex flex-col gap-1.5 h-[108px]">
+			<label class="text-[#4F4F4F]">Nome</label>
+			<input type="text" pInputText [(ngModel)]="user.name" required placeholder="Seu nome" />
+
+			@if (!user.name && isInvalid) {
+			<label class="text-xs text-[#ff2637]"> Insira um nome válido! </label>}
+		</div>
+		<div class="flex flex-col gap-1.5 h-[108px]">
+			<label class="text-[#4F4F4F]">Sobrenome</label>
+			<input type="text" pInputText [(ngModel)]="user.surname" required placeholder="Seu sobrenome" />
+
+			@if (!user.surname && isInvalid) {
+			<label class="text-xs text-[#ff2637]"> Insira um sobrenome válido! </label>}
+		</div>
+		<div class="flex flex-col gap-1.5 h-[108px]">
+			<label class="text-[#4F4F4F]">E-mail</label>
+			<input type="text" pInputText [(ngModel)]="user.email" required placeholder="E-mail principal" />
+
+			@if (!user.email && isInvalid) {
+			<label class="text-xs text-[#ff2637]"> Insira um e-mail válido! </label>}
+		</div>
+		<div class="flex flex-col gap-1.5 h-[108px]">
+			<label class="text-[#4F4F4F]">Número do NIS(PIS)</label>
+			<p-inputMask mask="999.99999.99-9" [(ngModel)]="user.nis" placeholder="NIS(PIS)" />
+
+			@if (!user.nis && isInvalid) {
+			<label class="text-xs text-[#ff2637]"> Insira um NIS válido! </label>}
+		</div>
+		<div class="flex justify-end gap-2">
+			<p-button size="small" label="Cancelar" severity="secondary" (onClick)="visibleCreate = false" />
+			<p-button size="small" [label]="user.id ? 'Salvar' : 'Criar'" (onClick)="onCreate(user)" />
+		</div>
+	</section>
+</p-dialog>
