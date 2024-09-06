@@ -93,6 +93,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		const isValid = this.validate(user);
 
 		user.nis = user.nis.replace(/\D/g, "");
+		user.email = user.email.trim();
 
 		if (isValid) {
 			this.onCreateSub = this.api.save(user).subscribe({
@@ -107,7 +108,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 					this.visibleCreate = false;
 				},
 				error: (error) => {
-					console.log(error);
 					const errorMessage = error.error;
 					this.toastService.add({
 						severity: "error",

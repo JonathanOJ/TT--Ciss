@@ -12,4 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
     @Query("FROM User u WHERE u.email = :email")
     public User findByEmail(String email);
 
+    @Query("FROM User u WHERE u.nis = :nis")
+    public User findByNis(String nis);
+
 }
